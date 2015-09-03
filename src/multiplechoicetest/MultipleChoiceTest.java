@@ -3,20 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mutliplechoicetest;
+package multiplechoicetest;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.IOException;
+//import java.io.IOException;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.regex.Pattern;
+//import java.util.logging.Level;
+//import java.util.logging.Logger;
 
 /**
  *
- * @author DSTIGANT
+ * @author KSADEGHI
  */
-public class MutlipleChoiceTest {
+public class MultipleChoiceTest {
 
     private static Scanner keyboard = new Scanner( System.in );
     
@@ -69,7 +70,7 @@ public class MutlipleChoiceTest {
     // Side Effects:
     // the QuizQuestion is printed to the screen
     // 
-    // Ouptut:
+    // Output:
     // void (none)
     public static void printQuizQuestion( QuizQuestion qq )
     {
@@ -81,7 +82,31 @@ public class MutlipleChoiceTest {
         // This function should print the number followed by the prompt on one line
         // and then, one to a line, the letter (A...E) followed by the text of the choice  (indent this line by 2 spaces)
         // If the student has chosen a particular choice, put a * before the choice.
+        String[] choiceLetters = { "A)", "B)", "C)", "D)", "E)"};
+        System.out.println( qq.getQuestionNumber() + ". " + qq.getPrompt());
+        String preAnswer;
+        for (int i = 0; i < 5; i++)
+        {
+            preAnswer = "  ";
+            if (qq.getStudentChoice() == i)
+                preAnswer = "* ";
+            System.out.print( choiceLetters[i]);
+            System.out.println( qq.getChoice(i));
+        }
         
+    }
+    
+    
+    public static String inputAnswer()
+    {
+        Scanner sc = new Scanner(System.in);
+        Pattern p = Pattern.compile("[a-eA-E]");
+        if (sc.hasNext(p))
+            return sc.next();
+        else {
+            System.out.println("You need to put in an answer A through E.");
+            return inputAnswer();
+        }
     }
     
     // readChoice
@@ -101,11 +126,20 @@ public class MutlipleChoiceTest {
     // none
     public static void readChoice( QuizQuestion qq )
     {
-        // erase all of this when you implement readChoice
-        try {
-            int hukairs = System.in.read();
-        } catch (IOException ex) {
-            Logger.getLogger(MutlipleChoiceTest.class.getName()).log(Level.SEVERE, null, ex);
+        System.out.println( "What is your answer?");
+        String answer = inputAnswer();
+        
+        switch (answer) {
+            case "a": case "A": qq.setStudentChoice(0);
+            case "b": case "B": qq.setStudentChoice(1);
+            case "c": case "C": qq.setStudentChoice(2);
+            case "d": case "D": qq.setStudentChoice(3);
+            case "e": case "E": qq.setStudentChoice(4);
+            default: { 
+                System.out.println( "There was a serious error in "
+                        + "inputting the answer.");
+                System.exit(0);
+            }
         }
     }
     

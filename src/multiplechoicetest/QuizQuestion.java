@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package mutliplechoicetest;
+package multiplechoicetest;
 
 // QuizQuestion
 // holds the question number, prompt, and answer choices of a quiz question on a test
