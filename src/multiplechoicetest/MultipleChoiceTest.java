@@ -6,7 +6,8 @@
 package multiplechoicetest;
 
 import java.io.File;
-import java.io.FileNotFoundException;
+//import java.io.FileNotFoundException;
+//import java.io.IOException;
 //import java.io.IOException;
 import java.util.Scanner;
 import java.util.regex.Pattern;
@@ -19,7 +20,7 @@ import java.util.regex.Pattern;
  */
 public class MultipleChoiceTest {
 
-    private static Scanner keyboard = new Scanner( System.in );
+    private static final Scanner keyboard = new Scanner( System.in );
     
     // readQuestionsFile
     // reads questions out of the questions file (Questions.txt)
@@ -90,22 +91,10 @@ public class MultipleChoiceTest {
             preAnswer = "  ";
             if (qq.getStudentChoice() == i)
                 preAnswer = "* ";
-            System.out.print( choiceLetters[i]);
+            
+            System.out.print( preAnswer);
+            System.out.print( choiceLetters[i] + " ");
             System.out.println( qq.getChoice(i));
-        }
-        
-    }
-    
-    
-    public static String inputAnswer()
-    {
-        Scanner sc = new Scanner(System.in);
-        Pattern p = Pattern.compile("[a-eA-E]");
-        if (sc.hasNext(p))
-            return sc.next();
-        else {
-            System.out.println("You need to put in an answer A through E.");
-            return inputAnswer();
         }
     }
     
@@ -130,16 +119,35 @@ public class MultipleChoiceTest {
         String answer = inputAnswer();
         
         switch (answer) {
-            case "a": case "A": qq.setStudentChoice(0);
-            case "b": case "B": qq.setStudentChoice(1);
-            case "c": case "C": qq.setStudentChoice(2);
-            case "d": case "D": qq.setStudentChoice(3);
-            case "e": case "E": qq.setStudentChoice(4);
-            default: { 
-                System.out.println( "There was a serious error in "
-                        + "inputting the answer.");
-                System.exit(0);
-            }
+            case "a": case "A": qq.setStudentChoice(0); break;
+            case "b": case "B": qq.setStudentChoice(1); break;
+            case "c": case "C": qq.setStudentChoice(2); break;
+            case "d": case "D": qq.setStudentChoice(3); break;
+            case "e": case "E": qq.setStudentChoice(4); break;
+        }
+    }
+    
+    // inputAnswer
+    // checks the next keyboard input so that it is a part of the characters a-e 
+    // or A-E and keeps accepting input until they get it right
+    //
+    // inputs:
+    // none
+    //
+    // side effects:
+    // prompts the user for the correct input if mismatching input is put in
+    //
+    // outputs: 
+    // answer - the String of one character that contains the answer choice input    
+    public static String inputAnswer()
+    {
+        Scanner sc = new Scanner(System.in);
+        Pattern p = Pattern.compile("[a-eA-E]");
+        if (sc.hasNext(p))
+            return sc.next();
+        else {
+            System.out.println("You need to put in an answer A through E.");
+            return inputAnswer();
         }
     }
     
@@ -158,7 +166,26 @@ public class MultipleChoiceTest {
     // none
     public static void printQuizQuestionResult( QuizQuestion qq )
     {
+        boolean isCorrect = qq.getStudentChoice() == qq.getCorrectChoice();
         
+        String[] choiceLetters = { "A)", "B)", "C)", "D)", "E)"};
+        System.out.println( qq.getQuestionNumber() + ". " + qq.getPrompt());
+        String preAnswer;
+        for (int i = 0; i < 5; i++)
+        {
+            preAnswer = "  ";
+            
+            if (qq.getCorrectChoice() == i)
+                preAnswer = "+ ";
+            else if (qq.getStudentChoice() == i)
+                preAnswer = "* ";
+            
+            System.out.print( preAnswer);
+            System.out.print( choiceLetters[i] + " ");
+            System.out.println( qq.getChoice(i));
+        }
+        if (isCorrect) System.out.println( "CORRECT!");
+        else System.out.println( "WRONG!");
     }
     
     // allAnswered
@@ -201,10 +228,46 @@ public class MultipleChoiceTest {
     // outputs
     // returns -1 if the user wants to go to the previous question
     // returns 1 if the user wants to go to the next question
-    // returns 0 if the user wants to stay on the currenc question
-    public static int changeQuestion()
+    // returns 0 if the user wants to stay on the current question
+    public static int changeQuestion() 
     {
-        return 1;
+        System.out.println( "Do you want to go to the (N)ext or (P)revious "
+                + "question, or remain on the (C)urrent question?");
+        String choice = inputChangeQuestion();
+        switch (choice) {
+            case "p": case "P": return -1;
+            case "c": case "C": return 0;
+            case "n": case "N": return 1;
+        }
+        
+        return 0;
+    }
+    
+    // inputChangeQuestion
+    // checks the next keyboard input so that it is a part of the characters n, p,
+    // c, N, P, or C and keeps asking until correct input is received
+    //
+    // inputs:
+    // none
+    //
+    // side effects:
+    // prompts the user for the correct input if mismatching input is put in
+    //
+    // outputs: 
+    // answer - the String of one character that contains the input for changeQuestion
+    public static String inputChangeQuestion()
+    {
+        Scanner sc = new Scanner(System.in);
+        Pattern p = Pattern.compile("[npcNPC]");
+        if (sc.hasNext(p))
+            return sc.next();
+        else {
+            System.out.print("You need to put in:\n"
+                    + "N - next question\n"
+                    + "P - previous question\n"
+                    + "C - current question\n");
+            return inputChangeQuestion();
+        }
     }
     
     public static void main(String[] args) 
@@ -245,12 +308,10 @@ public class MultipleChoiceTest {
         System.out.println( "Summary" );
         
         int numCorrect = 0;
-        for ( int i = 0; i < questions.length; i++ )
-        {
+        for (QuizQuestion question : questions) {
             System.out.println();
-            printQuizQuestionResult( questions[i] );
-            if ( questions[i].getStudentChoice() == questions[i].getCorrectChoice() )
-            {
+            printQuizQuestionResult(question);
+            if (question.getStudentChoice() == question.getCorrectChoice()) {
                 numCorrect++;
             }
         }
@@ -260,5 +321,4 @@ public class MultipleChoiceTest {
         System.out.println( "You got " + numCorrect + "/" + questions.length + " questions correct." );
         System.out.println( "==================================================" );
     }
-    
 }
