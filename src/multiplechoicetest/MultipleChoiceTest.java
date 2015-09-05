@@ -135,7 +135,7 @@ public class MultipleChoiceTest {
     // none
     //
     // side effects:
-    // prompts the user for the correct input if mismatching input is put in
+    // none
     //
     // outputs: 
     // answer - the String of one character that contains the answer choice input    
@@ -146,7 +146,6 @@ public class MultipleChoiceTest {
         if (sc.hasNext(p))
             return sc.next();
         else {
-            System.out.println("You need to put in an answer A through E.");
             return inputAnswer();
         }
     }
@@ -251,7 +250,7 @@ public class MultipleChoiceTest {
     // none
     //
     // side effects:
-    // prompts the user for the correct input if mismatching input is put in
+    // none
     //
     // outputs: 
     // answer - the String of one character that contains the input for changeQuestion
@@ -262,10 +261,6 @@ public class MultipleChoiceTest {
         if (sc.hasNext(p))
             return sc.next();
         else {
-            System.out.print("You need to put in:\n"
-                    + "N - next question\n"
-                    + "P - previous question\n"
-                    + "C - current question\n");
             return inputChangeQuestion();
         }
     }
