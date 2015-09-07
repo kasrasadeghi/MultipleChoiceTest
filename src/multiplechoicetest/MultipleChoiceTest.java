@@ -126,7 +126,7 @@ public class MultipleChoiceTest {
             case "e": case "E": qq.setStudentChoice(4); break;
         }
     }
-    
+     
     // inputAnswer
     // checks the next keyboard input so that it is a part of the characters a-e 
     // or A-E and keeps accepting input until they get it right
@@ -230,12 +230,13 @@ public class MultipleChoiceTest {
     // returns 0 if the user wants to stay on the current question
     public static int changeQuestion() 
     {
-        System.out.println( "Do you want to go to the (N)ext or (P)revious "
-                + "question, or remain on the (C)urrent question?");
+        System.out.println( "N) Next question\n" +
+                "P) Previous question\n" +
+                "R) Remain on this question");
         String choice = inputChangeQuestion();
         switch (choice) {
             case "p": case "P": return -1;
-            case "c": case "C": return 0;
+            case "r": case "R": return 0;
             case "n": case "N": return 1;
         }
         
@@ -257,7 +258,7 @@ public class MultipleChoiceTest {
     public static String inputChangeQuestion()
     {
         Scanner sc = new Scanner(System.in);
-        Pattern p = Pattern.compile("[npcNPC]");
+        Pattern p = Pattern.compile("[nprNPR]");
         if (sc.hasNext(p))
             return sc.next();
         else {
