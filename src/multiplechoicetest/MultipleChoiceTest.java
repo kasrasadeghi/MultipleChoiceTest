@@ -96,6 +96,8 @@ public class MultipleChoiceTest {
             System.out.print( choiceLetters[i] + " ");
             System.out.println( qq.getChoice(i));
         }
+        if (qq.getStudentChoice() == -1)
+            System.out.println("You have not answered this question yet.");
     }
     
     // readChoice
