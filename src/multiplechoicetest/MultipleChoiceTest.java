@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
  */
 public class MultipleChoiceTest {
 
-    private static final Scanner keyboard = new Scanner( System.in );
+    private static final Scanner sc = new Scanner( System.in );
     
     // readQuestionsFile
     // reads questions out of the questions file (Questions.txt)
@@ -143,7 +143,6 @@ public class MultipleChoiceTest {
     // answer - the String of one character that contains the answer choice input    
     public static String inputAnswer()
     {
-        Scanner sc = new Scanner(System.in);
         Pattern p = Pattern.compile("[a-eA-E]");
         if (sc.hasNext(p))
             return sc.next();
@@ -167,8 +166,6 @@ public class MultipleChoiceTest {
     // none
     public static void printQuizQuestionResult( QuizQuestion qq )
     {
-        boolean isCorrect = qq.getStudentChoice() == qq.getCorrectChoice();
-        
         String[] choiceLetters = { "A)", "B)", "C)", "D)", "E)"};
         System.out.println( qq.getQuestionNumber() + ". " + qq.getPrompt());
         String preAnswer;
@@ -185,7 +182,7 @@ public class MultipleChoiceTest {
             System.out.print( choiceLetters[i] + " ");
             System.out.println( qq.getChoice(i));
         }
-        if (isCorrect) System.out.println( "CORRECT!");
+        if (qq.getStudentChoice() == qq.getCorrectChoice()) System.out.println( "CORRECT!");
         else System.out.println( "WRONG!");
     }
     
@@ -238,7 +235,7 @@ public class MultipleChoiceTest {
         String choice = inputChangeQuestion();
         switch (choice) {
             case "p": case "P": return -1;
-            case "r": case "R": return 0;
+            //case "r": case "R": return 0;
             case "n": case "N": return 1;
         }
         
@@ -259,8 +256,8 @@ public class MultipleChoiceTest {
     // answer - the String of one character that contains the input for changeQuestion
     public static String inputChangeQuestion()
     {
-        Scanner sc = new Scanner(System.in);
-        Pattern p = Pattern.compile("[nprNPR]");
+        //Pattern p = Pattern.compile("[nprNPR]");
+        Pattern p = Pattern.compile("[a-zA-Z]");
         if (sc.hasNext(p))
             return sc.next();
         else {
@@ -288,7 +285,7 @@ public class MultipleChoiceTest {
             {
                 System.out.println();
                 System.out.println( "You've answered all the questions.  Would you like to end the test (Y/N)");
-                char endTestResponse = keyboard.next().toUpperCase().charAt(0);
+                char endTestResponse = sc.next().toUpperCase().charAt(0);
                 if ( endTestResponse == 'Y' )
                 {
                     done = true;
