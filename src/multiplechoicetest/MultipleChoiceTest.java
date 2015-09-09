@@ -118,7 +118,7 @@ public class MultipleChoiceTest {
     public static void readChoice( QuizQuestion qq )
     {
         System.out.println( "What is your answer?");
-        String answer = inputAnswer();
+        String answer = sc.next();
         
         switch (answer) {
             case "a": case "A": qq.setStudentChoice(0); break;
@@ -126,28 +126,6 @@ public class MultipleChoiceTest {
             case "c": case "C": qq.setStudentChoice(2); break;
             case "d": case "D": qq.setStudentChoice(3); break;
             case "e": case "E": qq.setStudentChoice(4); break;
-        }
-    }
-     
-    // inputAnswer
-    // checks the next keyboard input so that it is a part of the characters a-e 
-    // or A-E and keeps accepting input until they get it right
-    //
-    // inputs:
-    // none
-    //
-    // side effects:
-    // none
-    //
-    // outputs: 
-    // answer - the String of one character that contains the answer choice input    
-    public static String inputAnswer()
-    {
-        Pattern p = Pattern.compile("[a-eA-E]");
-        if (sc.hasNext(p))
-            return sc.next();
-        else {
-            return inputAnswer();
         }
     }
     
@@ -235,11 +213,9 @@ public class MultipleChoiceTest {
         String choice = inputChangeQuestion();
         switch (choice) {
             case "p": case "P": return -1;
-            //case "r": case "R": return 0;
             case "n": case "N": return 1;
+            default: return 0;
         }
-        
-        return 0;
     }
     
     // inputChangeQuestion
